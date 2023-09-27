@@ -32,7 +32,11 @@ class ProfileCubit extends Cubit<ProfileState> {
 
     switch (apiResponse) {
       case ApiSuccess():
-        emit(ProfileStateSuccess(apiResponse.data!.user));
+        final user = apiResponse.data!.user;
+        emit(ProfileStateSuccess(
+          user,
+          user.gender != null ? Gender.fromText(apiResponse.data!.user.gender) : null,
+        ));
       case ApiError():
         emit(ProfileStateFailed());
       default:

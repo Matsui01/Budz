@@ -5,4 +5,5 @@ class AppSizes {
   static const double contentSpacing = 24;
   static const double heightSize = 48;
   static const double border = 12;
+  static const double icon = 12;
 }

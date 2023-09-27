@@ -7,6 +7,7 @@ abstract class AppTheme {
     return ThemeData(
       colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF2371EE)),
       useMaterial3: true,
+      brightness: Brightness.light,
       fontFamily: 'Outfit',
       appBarTheme: const AppBarTheme(
         centerTitle: true,
