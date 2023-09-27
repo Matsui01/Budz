@@ -13,12 +13,37 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  retrofit: ^4.0.1
+  dio: ^5.3.0
+  logger: ^2.0.2
+  flutter_bloc: ^8.1.3
+  get_it: ^7.6.0
+  auto_route: ^7.7.1
+  mask_text_input_formatter: ^2.5.0
+  flux_validator_dart: ^2.0.0
+  equatable: ^2.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  lint: ^2.1.2
+  auto_route_generator: ^7.2.0
+  retrofit_generator: ^7.0.8
+  floor_generator: ^1.4.2
+  build_runner: ^2.4.6
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/
+    - assets/icons/
+    - assets/images/
+    - assets/font/
+  fonts:
+    - family: Outfit
+      fonts:
+        - asset: assets/font/Outfit/Outfit-Regular.ttf
+        - asset: assets/font/Outfit/Outfit-Bold.ttf
+        - asset: assets/font/Outfit/Outfit-Medium.ttf
