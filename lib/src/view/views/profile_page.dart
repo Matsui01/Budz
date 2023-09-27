@@ -1,24 +1,17 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:budz/src/domain/models/gender.dart';
-import 'package:budz/src/domain/models/requests/profile_request.dart';
+import 'package:budz/src/utils/constants/app_color.dart';
 import 'package:budz/src/utils/constants/app_sizes.dart';
-import 'package:budz/src/utils/resources/validators.dart';
-import 'package:budz/src/view/cubits/profile/profile_cubit.dart';
-import 'package:budz/src/view/views/delete_account_bottom_sheet.dart';
-import 'package:budz/src/view/views/picture_bottom_sheet.dart';
-import 'package:budz/src/view/widgets/appbar.dart';
-import 'package:budz/src/view/widgets/custom_dropdown_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../domain/models/user.dart';
-import '../../utils/constants/app_color.dart';
+import '../cubits/profile/profile_cubit.dart';
 import '../cubits/profile/profile_state.dart';
-import '../widgets/custom_bottom_sheet.dart';
-import '../widgets/custom_text_form_field.dart';
+import '../widgets/avatar_image.dart';
+import '../widgets/custom_button.dart';
 
 @RoutePage()
 class ProfilePage extends StatefulWidget {
@@ -32,188 +25,144 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     scheduleMicrotask(() => context.read<ProfileCubit>().getProfile());
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppbar(
-        title: "Editar Perfil",
-      ),
-      body: BlocBuilder<ProfileCubit, ProfileState>(
-        builder: (BuildContext context, ProfileState state) {
-          switch (state.runtimeType) {
-            case ProfileStateSuccess:
-              return _BuildProfile(
-                user: (state as ProfileStateSuccess).user,
-                selectedGender: (state).gender,
-              );
-            case ProfileStateLoading:
-              return const Center(child: CircularProgressIndicator());
-            case ProfileStateFailed:
-              return const Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Erro, tente novamente mais tarde'),
-                  Icon(Icons.refresh),
-                ],
-              );
-            case ProfileStateStart:
-              return const SizedBox();
-            default:
-              return const Center(child: Text('Página vazia'));
-          }
-        },
-      ),
-    );
-  }
-}
-
-class _BuildProfile extends StatefulWidget {
-  final User user;
-  final Gender? selectedGender;
-  const _BuildProfile({
-    Key? key,
-    required this.user,
-    this.selectedGender,
-  }) : super(key: key);
-
-  @override
-  State<_BuildProfile> createState() => _BuildProfileState();
-}
-
-class _BuildProfileState extends State<_BuildProfile> {
-  final _nameCtrl = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
-  final _validators = Validators();
-
-  final _genderValues = [
-    Gender(dropText: 'Masculino'),
-    Gender(dropText: 'Feminino'),
-    Gender(dropText: 'Outros'),
-  ];
-
-  @override
-  void initState() {
-    _nameCtrl.text = widget.user.nickname ?? '';
-    _emailCtrl.text = widget.user.email;
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSizes.spacing),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _AvatarImage(
-                url: widget.user.photoUrl,
-              ),
-              const SizedBox(height: AppSizes.contentSpacing),
-              Text('Nome', style: Theme.of(context).textTheme.titleSmall),
-              CustomTextField(
-                ctrl: _nameCtrl,
-                padding: const EdgeInsets.only(top: AppSizes.childSpacing),
-                textCapitalization: TextCapitalization.words,
-                validator: _validators.name,
-                textInputType: TextInputType.name,
-              ),
-              const SizedBox(height: AppSizes.contentSpacing),
-              Text('Email', style: Theme.of(context).textTheme.titleSmall),
-              CustomTextField(
-                ctrl: _emailCtrl,
-                padding: const EdgeInsets.only(top: AppSizes.childSpacing),
-                textInputType: TextInputType.emailAddress,
-                validator: _validators.email,
-              ),
-              const SizedBox(height: AppSizes.contentSpacing),
-              Text('Gênero', style: Theme.of(context).textTheme.titleSmall),
-              const SizedBox(height: AppSizes.childSpacing),
-              CustomDropdownButton(
-                hint: 'Selecione uma opção',
-                list: _genderValues,
-                selectedItem: widget.selectedGender,
-                onChanged: (value) {
-                  context.read<ProfileCubit>().setGender(value as Gender?);
-                },
-              ),
-              const SizedBox(height: AppSizes.contentSpacing),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: () {
-                    if (!_formKey.currentState!.validate()) return;
-                    context.read<ProfileCubit>().saveProfile(
-                          ProfileRequest(
-                            email: _emailCtrl.text,
-                            name: _nameCtrl.text,
-                            gender: context.read<ProfileCubit>().gender?.text,
-                          ),
-                        );
-                  },
-                  child: const Text(
-                    'SALVAR',
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () {
-                    showCustomBottomSheet(context, (context) {
-                      return const DeleteAccountBottomSheet();
-                    }, true);
-                  },
-                  child: const Text(
-                    'Excluir conta',
-                    style: TextStyle(color: AppColor.font),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+    return BlocBuilder<ProfileCubit, ProfileState>(
+      builder: (BuildContext context, ProfileState state) {
+        switch (state.runtimeType) {
+          case ProfileStateSuccess:
+            return _BuildProfile(
+              user: (state as ProfileStateSuccess).user,
+            );
+          case ProfileStateLoading:
+            return const Center(child: CircularProgressIndicator());
+          case ProfileStateFailed:
+            return const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Erro, tente novamente mais tarde'),
+                Icon(Icons.refresh),
+              ],
+            );
+          case ProfileStateStart:
+            return const SizedBox();
+          default:
+            return const Center(child: Text('Página vazia'));
+        }
+      },
     );
   }
 }
 
-class _AvatarImage extends StatelessWidget {
-  final String? url;
-  const _AvatarImage({required this.url});
+class _BuildProfile extends StatelessWidget {
+  final User user;
+  const _BuildProfile({
+    Key? key,
+    required this.user,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        if (url != null)
-          CircleAvatar(
-            radius: 48,
-            backgroundImage: NetworkImage(url!),
-          )
-        else
-          const CircleAvatar(
-            child: Icon(
-              Icons.add_a_photo_outlined,
+        SafeArea(
+          child: Container(
+            color: AppColor.white,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(AppSizes.spacing),
+                  child: Row(
+                    children: [
+                      AvatarImage(
+                        url: user.photoUrl,
+                        radius: 28,
+                      ),
+                      const SizedBox(width: AppSizes.spacing),
+                      Text(user.nickname ?? '', style: Theme.of(context).textTheme.titleLarge),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
-        SizedBox(
-          width: double.infinity,
-          child: TextButton(
-            onPressed: () {
-              showCustomBottomSheet(context, (context) {
-                return PictureBottomSheet();
-              });
-            },
-            child: const Text('ALTERAR FOTO'),
-          ),
         ),
+        Expanded(
+          child: Theme(
+            data: ThemeData(
+              outlinedButtonTheme: OutlinedButtonThemeData(
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(0),
+                  ),
+                  backgroundColor: AppColor.white,
+                ),
+              ),
+            ),
+            child: ListView(
+              padding: const EdgeInsets.all(AppSizes.spacing),
+              children: [
+                Button.oulined(
+                  onPressed: () {},
+                  text: 'Meus Pets',
+                  image: (_) => SvgPicture.asset('assets/icons/pet.svg'),
+                  buttonStyle: OutlinedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(AppSizes.border16),
+                        topRight: Radius.circular(AppSizes.border16),
+                      ),
+                    ),
+                  ),
+                ),
+                Button.oulined(
+                  onPressed: () {},
+                  text: 'Editar Perfil',
+                  image: (_) => SvgPicture.asset('assets/icons/person.svg'),
+                ),
+                Button.oulined(
+                  onPressed: () {},
+                  text: 'Ferramentas',
+                  image: (_) => SvgPicture.asset(
+                    'assets/icons/tools.svg',
+                  ),
+                ),
+                Button.oulined(
+                  onPressed: () {},
+                  text: 'Gerenciar Assinatura',
+                  image: (_) => SvgPicture.asset('assets/icons/crown.svg'),
+                ),
+                Button.oulined(
+                  onPressed: () {},
+                  text: 'Alterar Senha',
+                  image: (_) => SvgPicture.asset('assets/icons/lock.svg'),
+                  buttonStyle: OutlinedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(AppSizes.border16),
+                        bottomRight: Radius.circular(AppSizes.border16),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: AppSizes.contentSpacing),
+                Button.oulined(
+                  onPressed: () {},
+                  text: 'Alterar Senha',
+                  image: (_) => SvgPicture.asset('assets/icons/lock.svg'),
+                  buttonStyle: OutlinedButton.styleFrom(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(AppSizes.border16)),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
       ],
     );
   }
