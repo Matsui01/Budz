@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 import '../../utils/constants/app_sizes.dart';
@@ -6,11 +7,14 @@ import '../../utils/constants/app_sizes.dart';
 class CustomDropdownButton extends StatelessWidget {
   final String hint;
   final List<DropDownItem> list;
+  final DropDownItem? selectedItem;
   final void Function(DropDownItem?)? onChanged;
+
   const CustomDropdownButton({
     Key? key,
     required this.hint,
     required this.list,
+    required this.selectedItem,
     required this.onChanged,
   }) : super(key: key);
 
@@ -22,6 +26,7 @@ class CustomDropdownButton extends StatelessWidget {
         'Selecione uma opção',
         style: Theme.of(context).textTheme.bodyMedium,
       ),
+      value: selectedItem,
       style: Theme.of(context).textTheme.bodyMedium,
       borderRadius: const BorderRadius.all(Radius.circular(AppSizes.border)),
       decoration: InputDecoration(
@@ -42,9 +47,13 @@ class CustomDropdownButton extends StatelessWidget {
   }
 }
 
-abstract class DropDownItem {
+abstract class DropDownItem extends Equatable {
   final String dropText;
-  DropDownItem({
+
+  const DropDownItem({
     required this.dropText,
   });
+
+  @override
+  List<Object> get props => [dropText];
 }

@@ -1,9 +1,14 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:budz/src/domain/models/gender.dart';
 import 'package:budz/src/domain/models/requests/profile_request.dart';
 import 'package:budz/src/utils/constants/app_sizes.dart';
 import 'package:budz/src/utils/resources/validators.dart';
 import 'package:budz/src/view/cubits/profile/profile_cubit.dart';
+import 'package:budz/src/view/views/delete_account_bottom_sheet.dart';
+import 'package:budz/src/view/views/picture_bottom_sheet.dart';
 import 'package:budz/src/view/widgets/appbar.dart';
 import 'package:budz/src/view/widgets/custom_dropdown_button.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../domain/models/user.dart';
 import '../../utils/constants/app_color.dart';
 import '../cubits/profile/profile_state.dart';
+import '../widgets/custom_bottom_sheet.dart';
 import '../widgets/custom_text_form_field.dart';
 
 @RoutePage()
@@ -25,10 +31,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      context.read<ProfileCubit>().getProfile();
-    });
-    super.initState();
+    scheduleMicrotask(() => context.read<ProfileCubit>().getProfile());
   }
 
   @override
@@ -43,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
             case ProfileStateSuccess:
               return _BuildProfile(
                 user: (state as ProfileStateSuccess).user,
+                selectedGender: (state).gender,
               );
             case ProfileStateLoading:
               return const Center(child: CircularProgressIndicator());
@@ -67,7 +71,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
 class _BuildProfile extends StatefulWidget {
   final User user;
-  const _BuildProfile({required this.user});
+  final Gender? selectedGender;
+  const _BuildProfile({
+    Key? key,
+    required this.user,
+    this.selectedGender,
+  }) : super(key: key);
 
   @override
   State<_BuildProfile> createState() => _BuildProfileState();
@@ -89,6 +98,7 @@ class _BuildProfileState extends State<_BuildProfile> {
   void initState() {
     _nameCtrl.text = widget.user.nickname ?? '';
     _emailCtrl.text = widget.user.email;
+
     super.initState();
   }
 
@@ -128,6 +138,7 @@ class _BuildProfileState extends State<_BuildProfile> {
               CustomDropdownButton(
                 hint: 'Selecione uma opção',
                 list: _genderValues,
+                selectedItem: widget.selectedGender,
                 onChanged: (value) {
                   context.read<ProfileCubit>().setGender(value as Gender?);
                 },
@@ -154,7 +165,11 @@ class _BuildProfileState extends State<_BuildProfile> {
               SizedBox(
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showCustomBottomSheet(context, (context) {
+                      return const DeleteAccountBottomSheet();
+                    }, true);
+                  },
                   child: const Text(
                     'Excluir conta',
                     style: TextStyle(color: AppColor.font),
@@ -191,7 +206,11 @@ class _AvatarImage extends StatelessWidget {
         SizedBox(
           width: double.infinity,
           child: TextButton(
-            onPressed: () {},
+            onPressed: () {
+              showCustomBottomSheet(context, (context) {
+                return PictureBottomSheet();
+              });
+            },
             child: const Text('ALTERAR FOTO'),
           ),
         ),
