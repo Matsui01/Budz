@@ -89,12 +89,14 @@ class _BuildProfile extends StatelessWidget {
                         radius: 28,
                       ),
                       const SizedBox(width: AppSizes.spacing),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(user.nickname ?? '', style: Theme.of(context).textTheme.titleLarge),
-                          Text(user.email, style: Theme.of(context).textTheme.bodyMedium),
-                        ],
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(user.nickname ?? '', style: Theme.of(context).textTheme.titleLarge),
+                            Text(user.email, style: Theme.of(context).textTheme.bodyMedium),
+                          ],
+                        ),
                       ),
                     ],
                   ),
