@@ -1,4 +1,5 @@
 import 'package:budz/src/config/env.dart';
+import 'package:budz/src/utils/constants/strings.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:logger/logger.dart';
@@ -7,7 +8,6 @@ import 'data/datasource/profile_datasource.dart';
 import 'data/repositories/mock/profile_repository_impl_mock.dart';
 import 'data/repositories/profile_repository_impl.dart';
 import 'domain/repositories/profile_repository.dart';
-import 'utils/constants/strings.dart';
 import 'utils/resources/dio_interceptor.dart';
 
 final getIt = GetIt.instance;

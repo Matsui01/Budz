@@ -21,7 +21,7 @@ class ProfileRepositoryImplMock implements ProfileRepository {
           email: 'paulo.matsui@teste.com',
           fullname: 'Paulo Matsui',
           gender: 'Masculino',
-          nickname: 'J',
+          nickname: 'Paulo Matsui',
           photoUrl: 'https://picsum.photos/300/300',
         ),
       ),
@@ -41,7 +41,7 @@ class ProfileRepositoryImplMock implements ProfileRepository {
         email: 'paulo.matsui@teste.com',
         fullname: 'Paulo Matsui',
         gender: 'Masculino',
-        nickname: 'J',
+        nickname: 'Paulo Matsui',
         photoUrl: 'https://picsum.photos/300/300',
       ),
     ));

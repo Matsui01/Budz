@@ -108,10 +108,11 @@ class _BuildProfile extends StatelessWidget {
             data: Theme.of(context).copyWith(
               outlinedButtonTheme: OutlinedButtonThemeData(
                 style: OutlinedButton.styleFrom(
+                  side: const BorderSide(width: 0),
+                  backgroundColor: AppColor.white,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(0),
                   ),
-                  backgroundColor: AppColor.white,
                 ),
               ),
             ),
