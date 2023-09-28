@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:budz/src/config/router/app_router.dart';
 import 'package:budz/src/utils/constants/app_color.dart';
 import 'package:budz/src/utils/constants/app_sizes.dart';
 import 'package:flutter/material.dart';
@@ -40,11 +41,17 @@ class _ProfilePageState extends State<ProfilePage> {
           case ProfileStateLoading:
             return const Center(child: CircularProgressIndicator());
           case ProfileStateFailed:
-            return const Column(
+            return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Erro, tente novamente mais tarde'),
-                Icon(Icons.refresh),
+                const Text('Erro, tente novamente mais tarde'),
+                const SizedBox(height: AppSizes.spacing),
+                IconButton(
+                  onPressed: () {
+                    context.read<ProfileCubit>().getProfile();
+                  },
+                  icon: const Icon(Icons.refresh),
+                )
               ],
             );
           case ProfileStateStart:
@@ -82,7 +89,13 @@ class _BuildProfile extends StatelessWidget {
                         radius: 28,
                       ),
                       const SizedBox(width: AppSizes.spacing),
-                      Text(user.nickname ?? '', style: Theme.of(context).textTheme.titleLarge),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(user.nickname ?? '', style: Theme.of(context).textTheme.titleLarge),
+                          Text(user.email, style: Theme.of(context).textTheme.bodyMedium),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -92,7 +105,7 @@ class _BuildProfile extends StatelessWidget {
         ),
         Expanded(
           child: Theme(
-            data: ThemeData(
+            data: Theme.of(context).copyWith(
               outlinedButtonTheme: OutlinedButtonThemeData(
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -119,7 +132,9 @@ class _BuildProfile extends StatelessWidget {
                   ),
                 ),
                 Button.oulined(
-                  onPressed: () {},
+                  onPressed: () {
+                    context.router.push(ProfileDetailRoute(user: user));
+                  },
                   text: 'Editar Perfil',
                   image: (_) => SvgPicture.asset('assets/icons/person.svg'),
                 ),
@@ -151,8 +166,8 @@ class _BuildProfile extends StatelessWidget {
                 const SizedBox(height: AppSizes.contentSpacing),
                 Button.oulined(
                   onPressed: () {},
-                  text: 'Alterar Senha',
-                  image: (_) => SvgPicture.asset('assets/icons/lock.svg'),
+                  text: 'Sair',
+                  image: (_) => SvgPicture.asset('assets/icons/exit.svg'),
                   buttonStyle: OutlinedButton.styleFrom(
                     shape: const RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(AppSizes.border16)),

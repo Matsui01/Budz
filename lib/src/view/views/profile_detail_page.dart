@@ -23,7 +23,9 @@ import '../widgets/custom_text_form_field.dart';
 
 @RoutePage()
 class ProfileDetailPage extends StatefulWidget {
-  const ProfileDetailPage({super.key});
+  final User user;
+  // ignore: use_key_in_widget_constructors
+  const ProfileDetailPage({required this.user});
 
   @override
   State<ProfileDetailPage> createState() => _ProfileDetailPageState();
@@ -32,7 +34,7 @@ class ProfileDetailPage extends StatefulWidget {
 class _ProfileDetailPageState extends State<ProfileDetailPage> {
   @override
   void initState() {
-    scheduleMicrotask(() => context.read<ProfileCubit>().getProfile());
+    scheduleMicrotask(() => context.read<ProfileCubit>().setProfile(widget.user));
     super.initState();
   }
 
@@ -40,7 +42,7 @@ class _ProfileDetailPageState extends State<ProfileDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppbar(
-        title: "Editar Perfil",
+        title: Text("Editar Perfil"),
       ),
       body: BlocBuilder<ProfileCubit, ProfileState>(
         builder: (BuildContext context, ProfileState state) {
