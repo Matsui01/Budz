@@ -8,4 +8,4 @@ Este projeto precisa de um endpoit para funcionar no modo DEV e no PROD
 
 Arquitetura usada: Clean architecture
 
-![alt text](https://github.com/usernameMatsui01/Budz/blob/main/Screenshot_1695864868.png?raw=true)
+![alt text](https://github.com/usernameMatsui01/Budz/blob/main/screenshots/Screenshot_1695864868.png?raw=true)
