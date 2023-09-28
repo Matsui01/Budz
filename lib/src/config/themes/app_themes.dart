@@ -39,6 +39,11 @@ abstract class AppTheme {
       ),
       textTheme: const TextTheme(
         titleSmall: TextStyle(color: Color(0xFF171D1F)),
+        titleLarge: TextStyle(
+          fontWeight: FontWeight.w700,
+          fontSize: 20,
+          letterSpacing: 0.2,
+        ),
       ),
       navigationBarTheme: NavigationBarThemeData(
         surfaceTintColor: AppColor.white,
@@ -49,6 +54,24 @@ abstract class AppTheme {
 
           if (states.any(interactiveStates.contains)) {
             return const TextStyle(color: AppColor.primary);
+          }
+          return null;
+        }),
+      ),
+      listTileTheme: ListTileThemeData(
+        selectedTileColor: AppColor.selectedColorBackGround,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      radioTheme: RadioThemeData(
+        fillColor: MaterialStateProperty.resolveWith((Set<MaterialState> states) {
+          const Set<MaterialState> interactiveStates = <MaterialState>{
+            MaterialState.selected,
+          };
+
+          if (states.any(interactiveStates.contains)) {
+            return AppColor.selectedColor;
           }
           return null;
         }),

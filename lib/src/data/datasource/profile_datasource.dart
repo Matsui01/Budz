@@ -1,4 +1,3 @@
-import 'package:budz/src/domain/models/requests/profile_request.dart';
 import 'package:budz/src/domain/models/responses/profile_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -15,7 +14,11 @@ abstract class ProfileDatasource {
   Future<HttpResponse<ProfileResponse>> getProfile();
 
   @POST('/save-profile')
-  Future<HttpResponse<ProfileResponse>> saveProfile(ProfileRequest profileRequest);
+  Future<HttpResponse<ProfileResponse>> saveProfile({
+    @Body() required String email,
+    @Body() String? name,
+    @Body() String? gender,
+  });
 
   @POST('/delete-account')
   Future<HttpResponse<void>> deleteAcoount();

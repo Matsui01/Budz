@@ -18,11 +18,11 @@ class ProfileRepositoryImplMock implements ProfileRepository {
         ],
         user: User(
           id: '48E792A6-EF69-467E-B9FB-E4C272AE23AF',
-          email: 'j@teste.com',
-          fullname: 'J',
+          email: 'paulo.matsui@teste.com',
+          fullname: 'Paulo Matsui',
           gender: 'Masculino',
           nickname: 'J',
-          photoUrl: 'https://picsum.photos/1000/1000',
+          photoUrl: 'https://picsum.photos/300/300',
         ),
       ),
     );
@@ -38,11 +38,11 @@ class ProfileRepositoryImplMock implements ProfileRepository {
       ],
       user: User(
         id: '48E792A6-EF69-467E-B9FB-E4C272AE23AF',
-        email: 'j@teste.com',
-        fullname: 'J',
+        email: 'paulo.matsui@teste.com',
+        fullname: 'Paulo Matsui',
         gender: 'Masculino',
         nickname: 'J',
-        photoUrl: 'https://picsum.photos/1000/1000',
+        photoUrl: 'https://picsum.photos/300/300',
       ),
     ));
   }

@@ -21,6 +21,18 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ChatbotPage(),
       );
     },
+    DeleteFeedbackRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DeleteFeedbackPage(),
+      );
+    },
+    FeedbackRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const FeedbackPage(),
+      );
+    },
     HomeRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -40,9 +52,10 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     ProfileDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileDetailRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const ProfileDetailPage(),
+        child: ProfileDetailPage(user: args.user),
       );
     },
     ProfileRoute.name: (routeData) {
@@ -64,6 +77,34 @@ class ChatbotRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'ChatbotRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [DeleteFeedbackPage]
+class DeleteFeedbackRoute extends PageRouteInfo<void> {
+  const DeleteFeedbackRoute({List<PageRouteInfo>? children})
+      : super(
+          DeleteFeedbackRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DeleteFeedbackRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [FeedbackPage]
+class FeedbackRoute extends PageRouteInfo<void> {
+  const FeedbackRoute({List<PageRouteInfo>? children})
+      : super(
+          FeedbackRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'FeedbackRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -112,16 +153,31 @@ class MainRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [ProfileDetailPage]
-class ProfileDetailRoute extends PageRouteInfo<void> {
-  const ProfileDetailRoute({List<PageRouteInfo>? children})
-      : super(
+class ProfileDetailRoute extends PageRouteInfo<ProfileDetailRouteArgs> {
+  ProfileDetailRoute({
+    required User user,
+    List<PageRouteInfo>? children,
+  }) : super(
           ProfileDetailRoute.name,
+          args: ProfileDetailRouteArgs(user: user),
           initialChildren: children,
         );
 
   static const String name = 'ProfileDetailRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<ProfileDetailRouteArgs> page =
+      PageInfo<ProfileDetailRouteArgs>(name);
+}
+
+class ProfileDetailRouteArgs {
+  const ProfileDetailRouteArgs({required this.user});
+
+  final User user;
+
+  @override
+  String toString() {
+    return 'ProfileDetailRouteArgs{user: $user}';
+  }
 }
 
 /// generated route for

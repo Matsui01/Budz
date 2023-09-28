@@ -4,6 +4,7 @@ import 'package:budz/src/view/cubits/profile/profile_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../domain/models/gender.dart';
+import '../../../domain/models/user.dart';
 import '../../../domain/repositories/profile_repository.dart';
 import '../../../utils/resources/api_response.dart';
 
@@ -24,6 +25,15 @@ class ProfileCubit extends Cubit<ProfileState> {
         break;
       default:
     }
+  }
+
+  void setProfile(User user) {
+    emit(
+      ProfileStateSuccess(
+        user,
+        user.gender != null ? Gender.fromText(user.gender) : null,
+      ),
+    );
   }
 
   Future getProfile() async {
@@ -59,6 +69,19 @@ class ProfileCubit extends Cubit<ProfileState> {
         emit(ProfileStateFailed());
       default:
         emit(ProfileStateFailed());
+    }
+  }
+
+  Future<bool> deleteAccount() async {
+    ApiResponse<void> apiResponse = await _companyRepository.deleteAccount();
+
+    switch (apiResponse) {
+      case ApiSuccess():
+        return true;
+      case ApiError():
+        return false;
+      default:
+        return false;
     }
   }
 }

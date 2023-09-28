@@ -7,20 +7,21 @@ class AvatarImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        if (url != null)
-          CircleAvatar(
-            radius: radius,
-            backgroundImage: NetworkImage(url!),
-          )
-        else
-          const CircleAvatar(
-            child: Icon(
-              Icons.add_a_photo_outlined,
-            ),
+    if (url != null) {
+      return Center(
+        child: CircleAvatar(
+          radius: radius,
+          backgroundImage: NetworkImage(url!),
+        ),
+      );
+    } else {
+      return const Center(
+        child: CircleAvatar(
+          child: Icon(
+            Icons.image,
           ),
-      ],
-    );
+        ),
+      );
+    }
   }
 }

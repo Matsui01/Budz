@@ -23,7 +23,11 @@ class ProfileRepositoryImpl extends BaseApiRepository implements ProfileReposito
   @override
   Future<ApiResponse<ProfileResponse>> saveProfile(ProfileRequest profileRequest) async {
     return await getResponse<ProfileResponse>(
-      request: () => profileDatasource.saveProfile(profileRequest),
+      request: () => profileDatasource.saveProfile(
+        email: profileRequest.email,
+        gender: profileRequest.gender,
+        name: profileRequest.name,
+      ),
     );
   }
 

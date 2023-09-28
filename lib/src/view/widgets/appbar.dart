@@ -5,7 +5,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(70);
 
-  final String title;
+  final Widget? title;
   final String? toolTip;
   final IconData icon;
   final List<Widget>? actions;
@@ -13,7 +13,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   const CustomAppbar({
     Key? key,
-    this.title = "",
+    this.title,
     this.toolTip = "Voltar",
     this.icon = Icons.arrow_back,
     this.actions,
@@ -25,7 +25,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: AppBar(
-        title: Text(title),
+        title: title,
         centerTitle: true,
         actions: actions,
         leading: IconButton(
